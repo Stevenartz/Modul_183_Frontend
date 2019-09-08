@@ -69,3 +69,7 @@ body{
   text-align: center;
   font-size: 13px;
 }
+
+.errorMsg {
+  color: red;
+}

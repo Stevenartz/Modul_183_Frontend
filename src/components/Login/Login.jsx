@@ -1,20 +1,28 @@
 import React from 'react';
-import { encode } from 'base-64';
 import './Login.css';
+import { encode } from 'base-64';
 
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
 
+        localStorage.removeItem('jwt');
+
         this.state = {
             username: "Stevenartz",
-            password: "password"
+            password: "password",
         }
     }
 
-    handleGetToken = () => {
+    handleChange = event => {
+        this.setState({
+            [event.target.id]: event.target.value
+        });
+    }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
         let url = 'http://localhost:8080/authenticate';
 
         let headers = new Headers();
@@ -34,42 +42,30 @@ class Login extends React.Component {
                 }
             })
             .then(data => {
-                alert(data);
+                localStorage.setItem('jwt', data);
+                this.props.history.push('/dashboard');
             })
             .catch(() => {
                 this.showErrorMsg();
             })
-
     }
 
-    login = response => {
-        let text = response;
-        alert("Success: " + text);
+    clearLocalStorage = () => {
+        localStorage.removeItem('jwt');
     }
 
     showErrorMsg = () => {
-        alert(">>> ErrorMsg");
+        this.setState({ showErrMsg: true });
     }
 
     validateForm = () => {
         return this.state.username.length > 0 && this.state.password.length > 0;
     }
 
-    handleChange = event => {
-        this.setState({
-            [event.target.id]: event.target.value
-        });
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        this.handleGetToken();
-    }
-
     render() {
         return (
             <div>
-                <form onSubmit={(e) => this.handleSubmit(e)} className='login-form'>
+                <form onSubmit={e => this.handleSubmit(e)} className='login-form'>
                     <h1>Login</h1>
 
                     <div className='textbox'>
@@ -78,7 +74,8 @@ class Login extends React.Component {
                             autoComplete='off'
                             placeholder='Username'
                             type='text'
-                            onChange={this.handleChange} />
+                            onChange={this.handleChange}
+                            value={this.state.username} />
                     </div>
 
                     <div className='textbox'>
@@ -88,8 +85,13 @@ class Login extends React.Component {
                             placeholder='Password'
                             type='password'
                             onChange={this.handleChange}
+                            value={this.state.password}
                         />
                     </div>
+
+                    {this.state.showErrMsg &&
+                        <span className='errorMsg'>Login failed: Invalid username or password!</span>
+                    }
 
                     <button
                         type='submit'
@@ -100,7 +102,6 @@ class Login extends React.Component {
                     <div className='bottom-text'>
                         Don't have account? <a href='#'>Sign up</a>
                     </div>
-
                 </form>
             </div>
         )
