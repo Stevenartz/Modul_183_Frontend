@@ -53,6 +53,7 @@ body{
   height: 50px;
   border: none;
   background: linear-gradient(120deg,#3498db,#8e44ad,#3498db);
+  background-position: right;
   background-size: 200%;
   color: #fff;
   outline: none;
@@ -61,7 +62,7 @@ body{
 }
 
 .loginbtn:hover {
-  background-position: right;
+  background-position: left;
 }
 
 .bottom-text {
