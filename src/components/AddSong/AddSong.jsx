@@ -1,4 +1,5 @@
 import React from 'react';
+import './AddSong.css';
 
 class AddSong extends React.Component {
 
@@ -12,8 +13,10 @@ class AddSong extends React.Component {
 
     render() {
         return (
-            <div>
-                Add a new Song to your playlist!
+            <div className='center-screen'>
+                <div className='background'>
+                    Add song
+                </div>
             </div>
         )
     }
