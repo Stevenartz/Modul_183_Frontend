@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100vh;
+    min-height: 90vh;
   }
 
 .background {
@@ -15,14 +15,40 @@
   }
 
 .fadeInText {
-    -webkit-animation: focus-in-expand-fwd 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
-    animation: focus-in-expand-fwd 0.8s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
-    padding-bottom: 50px;
+    -webkit-animation: focus-in-expand-fwd 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
+    animation: focus-in-expand-fwd 0.6s cubic-bezier(0.250, 0.460, 0.450, 0.940) ;
+    padding-bottom: 25px;
     }
 
-.fade-in-top {
+.fade-in-top-1s-delay {
     -webkit-animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
     animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
+    padding-bottom: 50px;
+}
+
+.fade-in-top-2s-delay {
+  -webkit-animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
+  animation: fade-in-top 0.6s cubic-bezier(0.390, 0.575, 0.565, 1.000) 2s both;
+
+}
+
+
+.btn {
+  border: none;
+	background: none;
+	cursor: pointer;
+	padding: 25px 80px;
+	display: inline-block;
+	font-weight: 700;
+	position: relative;
+  border-radius: 50px;
+  border: 3px solid black;
+  color: black;
+  outline-color: black;
+}
+
+.btn:hover {
+  background-color: #bdc3c7;
 }
 
 /* ----------------------------------------------

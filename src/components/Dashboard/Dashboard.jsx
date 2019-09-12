@@ -40,12 +40,17 @@ class Dashboard extends React.Component {
             })
     }
 
+    changeToAddSong = () => {
+        this.props.history.push('/addSong');
+    }
+
     render() {
         return (
             <div className='center-screen'>
                 <div className='background'>
                     <h1 className='fadeInText'>Hi {this.state.user.firstname} {this.state.user.lastname}!</h1>
-                    <h2 className='fade-in-top'>Ready to capture some records?</h2>
+                    <h2 className='fade-in-top-1s-delay'>Ready to capture some songs for your playlist?</h2>
+                    <button className='fade-in-top-2s-delay btn' onClick={this.changeToAddSong}>Add a new Song!</button>
                 </div>
             </div>
         )
