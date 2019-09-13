@@ -1,6 +1,7 @@
 import React from 'react';
 import './Login.css';
 import { encode } from 'base-64';
+import { Form, Button, Alert } from 'react-bootstrap';
 
 class Login extends React.Component {
 
@@ -10,24 +11,25 @@ class Login extends React.Component {
         localStorage.removeItem('jwt');
 
         this.state = {
-            username: "Stevenartz",
-            password: "password",
+            username: 'Stevenartz',
+            password: 'password',
+            showErrMsg: false,
         }
     }
 
-    handleChange = event => {
+    handleChange = e => {
         this.setState({
-            [event.target.id]: event.target.value
+            [e.target.id]: e.target.value
         });
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
         let url = 'http://localhost:8080/authenticate';
 
         let headers = new Headers();
 
-        headers.append('Authorization', 'Basic ' + encode(this.state.username + ":" + this.state.password));
+        headers.append('Authorization', 'Basic ' + encode(this.state.username + ':' + this.state.password));
 
         fetch(url, {
             mode: 'cors',
@@ -64,45 +66,48 @@ class Login extends React.Component {
 
     render() {
         return (
-            <div>
-                <form onSubmit={e => this.handleSubmit(e)} className='login-form'>
-                    <h1>Login</h1>
-
-                    <div className='textbox'>
-                        <input
+            <div className='login-form'>
+                <h1>Login</h1>
+                <Form onSubmit={e => this.handleSubmit(e)}>
+                    <Form.Group controlId='formUsername'>
+                        <Form.Label>Username</Form.Label>
+                        <Form.Control
                             id='username'
-                            autoComplete='off'
-                            placeholder='Username'
                             type='text'
-                            onChange={this.handleChange}
-                            value={this.state.username} />
-                    </div>
-
-                    <div className='textbox'>
-                        <input
-                            id='password'
+                            placeholder='Enter username'
                             autoComplete='off'
-                            placeholder='Password'
+                            onChange={this.handleChange}
+                            value={this.state.username}
+                        />
+                    </Form.Group>
+                    <Form.Group controlId='formPassword'>
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                            id='password'
                             type='password'
+                            placeholder='Password'
+                            autoComplete='off'
                             onChange={this.handleChange}
                             value={this.state.password}
                         />
-                    </div>
-
-                    {this.state.showErrMsg &&
-                        <span className='errorMsg'>Login failed: Invalid username or password!</span>
-                    }
-
-                    <button
+                    </Form.Group>
+                    <Alert
+                        show={this.state.showErrMsg}
+                        variant='danger'>
+                        <Alert.Heading>Error!</Alert.Heading>
+                        <p>
+                            Login failed: Invalid username or password!
+                         </p>
+                    </Alert>
+                    <Button
+                        variant='primary'
                         type='submit'
-                        className='loginbtn'
+                        size='lg'
                         disabled={!this.validateForm()}
-                    >Login</button>
-
-                    <div className='bottom-text'>
-                        Don't have account? <a href='#'>Sign up</a>
-                    </div>
-                </form>
+                        block>
+                        Login
+                    </Button>
+                </Form>
             </div>
         )
     }

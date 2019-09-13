@@ -1,5 +1,6 @@
 import React from 'react';
 import './Dashboard.css';
+import { Button } from 'react-bootstrap';
 
 class Dashboard extends React.Component {
 
@@ -36,7 +37,7 @@ class Dashboard extends React.Component {
                 this.setState({ user: data })
             })
             .catch((e) => {
-                alert("failed: " + e);
+                alert('failed: ' + e);
             })
     }
 
@@ -50,7 +51,12 @@ class Dashboard extends React.Component {
                 <div className='background'>
                     <h1 className='fadeInText'>Hi {this.state.user.firstname} {this.state.user.lastname}!</h1>
                     <h2 className='fade-in-top-1s-delay'>Ready to capture some songs for your playlist?</h2>
-                    <button className='fade-in-top-2s-delay btn' onClick={this.changeToAddSong}>Add a new Song!</button>
+                    <Button
+                        className='fade-in-top-2s-delay'
+                        variant='success'
+                        onClick={this.changeToAddSong}
+                        size='lg'
+                    >Add a new Song!</Button>
                 </div>
             </div>
         )
