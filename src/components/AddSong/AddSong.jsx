@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cn from 'classnames';
 import { Form, Button } from 'react-bootstrap';
+import SnackBar from '@material-ui/core/Snackbar';
 
 class AddSong extends Component {
     formDefaults = {
@@ -8,6 +9,7 @@ class AddSong extends Component {
         songTitle: { value: 'So Long', isValid: true, message: '' },
         songArtist: { value: 'ESCPR', isValid: true, message: '' },
         songLength: { value: '02:55', isValid: true, message: '' },
+        snackBarOpen: false,
     }
 
     state = {
@@ -29,7 +31,8 @@ class AddSong extends Component {
         e.preventDefault();
         /* this.resetValidationStates(); */
         if (this.formIsValid()) {
-            alert('>>> Form is valid!')
+            /* alert('>>> Form is valid!') */
+            this.setState({ snackBarOpen: true })
         }
     }
 
@@ -182,6 +185,7 @@ class AddSong extends Component {
                             <Form.Control
                                 required
                                 className={songLengthGroupClass}
+                                autoComplete='off'
                                 name='songLength'
                                 value={songLength.value}
                                 onChange={this.onChange}
@@ -190,7 +194,6 @@ class AddSong extends Component {
                                 {songLength.message}
                             </Form.Control.Feedback>
                         </Form.Group>
-
                         <Button
                             variant='primary'
                             type='submit'
@@ -198,9 +201,17 @@ class AddSong extends Component {
                             block>
                             Submit!
                     </Button>
+                        <SnackBar
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                            open={this.state.snackBarOpen}
+                            onClose={() => this.setState({ snackBarOpen: false })}
+                            autoHideDuration={2000}
+                            variant='success'
+                            message='Success!' />
                     </Form>
+
                 </div>
-            </div>
+            </div >
         );
     }
 };

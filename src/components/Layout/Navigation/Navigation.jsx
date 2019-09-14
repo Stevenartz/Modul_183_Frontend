@@ -10,6 +10,7 @@ class Navigation extends React.Component {
                 <ul>
                     <li><NavLink to='/dashboard'>Dashboard</NavLink></li>
                     <li><NavLink to='/addSong'>Add Song</NavLink></li>
+                    <li><NavLink to='/songList'>Song List</NavLink></li>
                     <li style={{ 'float': 'right' }}><NavLink to='/login'>Logout</NavLink></li>
                 </ul>
             </nav>

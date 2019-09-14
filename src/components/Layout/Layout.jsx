@@ -7,6 +7,7 @@ import Authenticated from '../Authenticated/Authenticated';
 
 import Dashboard from '../Dashboard/Dashboard';
 import AddSong from '../AddSong/AddSong';
+import SongList from '../SongList/SongList';
 
 class Layout extends React.Component {
 
@@ -19,6 +20,7 @@ class Layout extends React.Component {
                         <Header />
                         <Route path='/dashboard' component={Dashboard} />
                         <Route path='/addSong' component={AddSong} />
+                        <Route path='/songList' component={SongList} />
                     </Authenticated>
                 </Switch>
             </div>
