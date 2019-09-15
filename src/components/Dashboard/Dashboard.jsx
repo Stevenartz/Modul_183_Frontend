@@ -1,6 +1,7 @@
 import React from 'react';
 import './Dashboard.css';
 import { Button } from 'react-bootstrap';
+import axios from 'axios';
 
 class Dashboard extends React.Component {
 
@@ -15,20 +16,19 @@ class Dashboard extends React.Component {
     componentDidMount = () => {
         let url = 'http://localhost:8080/getPersonByUsername';
 
-        let headers = new Headers();
+        let config = {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }
 
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
-        headers.append('Accept', 'application/json');
-        headers.append('Content-Type', 'application/json');
-
-        fetch(url, {
-            mode: 'cors',
-            method: 'GET',
-            headers: headers,
-        })
+        axios.get(url, config)
             .then(resp => {
-                if (resp.ok) {
-                    return resp.json();
+                console.log("resp: " + resp.data)
+                if (resp.status === 200) {
+                    return resp.data;
                 } else if (resp.status === 401) {
                     throw new Error();
                 }

@@ -2,6 +2,7 @@ import React from 'react';
 import './Login.css';
 import { encode } from 'base-64';
 import { Form, Button, Alert } from 'react-bootstrap';
+import axios from 'axios';
 
 class Login extends React.Component {
 
@@ -27,18 +28,16 @@ class Login extends React.Component {
         e.preventDefault();
         let url = 'http://localhost:8080/authenticate';
 
-        let headers = new Headers();
+        let config = {
+            headers: {
+                'Authorization': 'Basic ' + encode(this.state.username + ':' + this.state.password),
+            }
+        }
 
-        headers.append('Authorization', 'Basic ' + encode(this.state.username + ':' + this.state.password));
-
-        fetch(url, {
-            mode: 'cors',
-            method: 'POST',
-            headers: headers,
-        })
+        axios.get(url, config)
             .then(resp => {
-                if (resp.ok) {
-                    return resp.text();
+                if (resp.status === 200) {
+                    return resp.data;
                 } else if (resp.status === 401) {
                     throw new Error();
                 }

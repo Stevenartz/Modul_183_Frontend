@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import './SongList.css';
 
 class SongList extends Component {
 
@@ -6,27 +8,25 @@ class SongList extends Component {
         super(props);
 
         this.state = {
-            user: {}
+            user: []
         }
     }
 
     componentDidMount = () => {
         let url = 'http://localhost:8080/getSongsByUsername';
 
-        let headers = new Headers();
+        let config = {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        }
 
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
-        headers.append('Accept', 'application/json');
-        headers.append('Content-Type', 'application/json');
-
-        fetch(url, {
-            mode: 'cors',
-            method: 'GET',
-            headers: headers,
-        })
+        axios.get(url, config)
             .then(resp => {
-                if (resp.ok) {
-                    return resp.json();
+                if (resp.status === 200) {
+                    return resp.data;
                 } else if (resp.status === 401) {
                     throw new Error();
                 }
@@ -41,16 +41,32 @@ class SongList extends Component {
 
     render() {
         return (
-            <div>
-                <textarea
-                    style={{ width: '600px', height: '800px' }}
-                    value={JSON.stringify(this.state.user, undefined, 4)}
-                    readOnly
-                />
-                <ul>
-                    <li>Here will the list be loaded</li>
-                </ul>
-            </div >
+            <div className='center-screen'>
+                <div className='background'>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Genre</th>
+                                <th>Title</th>
+                                <th>Artist</th>
+                                <th>Length</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.user.map(item => {
+                                return (
+                                    <tr key={item.id}>
+                                        <td>{item.genre}</td>
+                                        <td>{item.title}</td>
+                                        <td>{item.artist}</td>
+                                        <td>{item.length}</td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         );
     }
 };
