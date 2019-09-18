@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import cn from 'classnames';
 import { Form, Button } from 'react-bootstrap';
 import SnackBar from '@material-ui/core/Snackbar';
+import axios from 'axios';
 
 class AddSong extends Component {
+
+    constructor(props) {
+        super(props);
+        this.resetForm = this.resetForm.bind(this);
+    }
+
     formDefaults = {
         songGenre: { value: 'pop', isValid: true, message: '' },
         songTitle: { value: 'So Long', isValid: true, message: '' },
@@ -29,16 +36,47 @@ class AddSong extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        /* this.resetValidationStates(); */
         if (this.formIsValid()) {
-            /* alert('>>> Form is valid!') */
-            this.setState({ snackBarOpen: true })
+            let timeArr = this.state.songLength.value.split(':');
+            let seconds = (timeArr[0] * 60) + (+timeArr[1]);
+
+            let url = 'http://localhost:8080/saveSong';
+
+            let config = {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'genre': this.state.songGenre.value,
+                    'title': this.state.songTitle.value,
+                    'artist': this.state.songArtist.value,
+                    'length': seconds
+                }
+            }
+
+
+            // reset Form --> TODO and validate in backend
+            axios.post(url, null, config)
+                .then(resp => {
+                    if (resp.status === 200) {
+                        return resp.data;
+                    } else if (resp.status === 401) {
+                        throw new Error();
+                    }
+                })
+                .then(data => {
+                    if (data) {
+                        this.setState({ snackBarOpen: true })
+                        this.resetForm();
+                    } else {
+                        alert("Something went wrong while saving!");
+                    }
+                })
+
         }
     }
 
     formIsValid = () => {
-        /* const songGenre = { ...this.state.songGenre }
-        const songTitle = { ...this.state.songTitle }; */
         const { songGenre, songTitle, songArtist, songLength } = this.state;
         let isValid = true;
 
@@ -86,19 +124,6 @@ class AddSong extends Component {
 
         return isValid;
     }
-
-    /*     resetValidationStates = () => {
-            const state = JSON.parse(JSON.stringify(this.state));
-    
-            Object.keys(state).map(key => {
-                if (state[key].hasOwnProperty('isValid')) {
-                    state[key].isValid = true;
-                    state[key].message = '';
-                }
-            });
-    
-            this.setState(state);
-        } */
 
     resetForm = () => {
         this.setState(...this.formDefaults);
