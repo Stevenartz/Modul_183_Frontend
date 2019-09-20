@@ -8,7 +8,6 @@ class AddSong extends Component {
 
     constructor(props) {
         super(props);
-        this.resetForm = this.resetForm.bind(this);
     }
 
     formDefaults = {
@@ -67,7 +66,7 @@ class AddSong extends Component {
                 .then(data => {
                     if (data) {
                         this.setState({ snackBarOpen: true })
-                        this.resetForm();
+                        this.setState({ ...this.formDefaults })
                     } else {
                         alert("Something went wrong while saving!");
                     }
@@ -123,10 +122,6 @@ class AddSong extends Component {
         }
 
         return isValid;
-    }
-
-    resetForm = () => {
-        this.setState(...this.formDefaults);
     }
 
     render() {
