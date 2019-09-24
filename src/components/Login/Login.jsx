@@ -4,12 +4,12 @@ import { encode } from 'base-64';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import cookies from 'react-cookies';
+import logger from 'loglevel';
+
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
-
-
 
         this.state = {
             username: 'Stevenartz',
@@ -19,6 +19,12 @@ class Login extends React.Component {
     }
 
     componentDidMount = () => {
+        // how to log to a file?
+        alert("logged?");
+        logger.setLevel("DEBUG");
+        logger.debug("debug");
+        logger.info("info");
+        logger.warn("warn");
         cookies.remove(
             'jwt',
             {
