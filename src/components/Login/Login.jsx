@@ -4,23 +4,12 @@ import { encode } from 'base-64';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import cookies from 'react-cookies';
-import winston from 'winston';
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
 
-        const logger = winston.createLogger({
-            level: 'info',
-            format: winston.format.json(),
-            transports: [
-                new winston.transports.Console({
-                    format: winston.format.simple()
-                })
-            ]
-        });
 
-        logger.info("nice");
 
         this.state = {
             username: 'Stevenartz',
