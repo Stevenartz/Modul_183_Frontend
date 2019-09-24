@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './SongList.css';
-
+import cookies from 'react-cookies';
 class SongList extends Component {
 
     constructor(props) {
@@ -17,7 +17,7 @@ class SongList extends Component {
 
         let config = {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                'Authorization': 'Bearer ' + cookies.load('jwt'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }

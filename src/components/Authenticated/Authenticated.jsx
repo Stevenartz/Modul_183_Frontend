@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import cookies from 'react-cookies';
 
 class Authenticated extends React.Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Authenticated extends React.Component {
     }
 
     componentDidMount() {
-        if (!localStorage.getItem('jwt')) {
+        if (!cookies.load('jwt')) {
             this.setState({ ...this.state, redirect: true });
         }
 
@@ -20,7 +21,7 @@ class Authenticated extends React.Component {
 
         let headers = new Headers();
 
-        headers.append('Authorization', 'Bearer ' + localStorage.getItem('jwt'));
+        headers.append('Authorization', 'Bearer ' + cookies.load('jwt'));
 
         fetch(url, {
             mode: 'cors',
@@ -38,7 +39,13 @@ class Authenticated extends React.Component {
                 this.setState({ user: data });
             })
             .catch((resp) => {
-                localStorage.removeItem('jwt');
+                cookies.remove(
+                    'jwt',
+                    {
+                        path: '/',
+                        domain: 'localhost',
+                    }
+                );
                 this.setState({ ...this.state, redirect: true });
             })
     }

@@ -3,19 +3,29 @@ import './Login.css';
 import { encode } from 'base-64';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
-
+import cookies from 'react-cookies';
 class Login extends React.Component {
 
     constructor(props) {
         super(props);
 
-        localStorage.removeItem('jwt');
+
 
         this.state = {
             username: 'Stevenartz',
             password: 'password',
             showErrMsg: false,
         }
+    }
+
+    componentDidMount = () => {
+        cookies.remove(
+            'jwt',
+            {
+                path: '/',
+                domain: 'localhost',
+            }
+        );
     }
 
     handleChange = e => {
@@ -43,16 +53,18 @@ class Login extends React.Component {
                 }
             })
             .then(data => {
-                localStorage.setItem('jwt', data);
+                cookies.save('jwt',
+                    data,
+                    {
+                        path: '/',
+                        domain: 'localhost',
+                    }
+                );
                 this.props.history.push('/dashboard');
             })
             .catch(() => {
                 this.showErrorMsg();
             })
-    }
-
-    clearLocalStorage = () => {
-        localStorage.removeItem('jwt');
     }
 
     showErrorMsg = () => {

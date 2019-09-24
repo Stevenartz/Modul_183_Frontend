@@ -3,7 +3,7 @@ import cn from 'classnames';
 import { Form, Button } from 'react-bootstrap';
 import SnackBar from '@material-ui/core/Snackbar';
 import axios from 'axios';
-
+import cookies from 'react-cookies';
 class AddSong extends Component {
 
     constructor(props) {
@@ -43,7 +43,7 @@ class AddSong extends Component {
 
             let config = {
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                    'Authorization': 'Bearer ' + cookies.load('jwt'),
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'genre': this.state.songGenre.value,
