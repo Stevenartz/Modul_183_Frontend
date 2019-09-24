@@ -2,6 +2,7 @@ import React from 'react';
 import './Dashboard.css';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import cookies from 'react-cookies';
 
 class Dashboard extends React.Component {
 
@@ -18,7 +19,7 @@ class Dashboard extends React.Component {
 
         let config = {
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+                'Authorization': 'Bearer ' + cookies.load('jwt'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             }
