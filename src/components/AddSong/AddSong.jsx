@@ -4,6 +4,9 @@ import { Form, Button } from 'react-bootstrap';
 import SnackBar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import cookies from 'react-cookies';
+import * as Regex from '../../constants/Regex';
+
+
 class AddSong extends Component {
 
     constructor(props) {
@@ -53,8 +56,6 @@ class AddSong extends Component {
                 }
             }
 
-
-            // reset Form --> TODO and validate in backend
             axios.post(url, null, config)
                 .then(resp => {
                     if (resp.status === 200) {
@@ -75,41 +76,61 @@ class AddSong extends Component {
         }
     }
 
+    // Escapes HTML Tags
+    escapeHtml = text => {
+        let map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+    }
+
+    // Validates the whole song form.
     formIsValid = () => {
-        const { songGenre, songTitle, songArtist, songLength } = this.state;
+        let { songGenre, songTitle, songArtist, songLength } = this.state;
         let isValid = true;
 
+        // Escape HTML
+        songGenre.value = this.escapeHtml(songGenre.value.trim());
+        songTitle.value = this.escapeHtml(songTitle.value.trim());
+        songArtist.value = this.escapeHtml(songArtist.value.trim());
+        songLength.value = this.escapeHtml(songLength.value.trim());
 
-        if (songGenre.value === "") {
+
+        if (songGenre.value.match(Regex.SONG_GENRE_REGEX) && songGenre.value.length > 0 && songGenre.value.length <= 30) {
+            songGenre.isValid = true;
+        } else {
             songGenre.isValid = false;
             songGenre.message = 'Please select a Song Genre!';
             isValid = false;
-        } else {
-            songGenre.isValid = true;
         }
 
-        if (songTitle.value.length < 3) {
-            songTitle.isValid = false;
-            songTitle.message = 'The Song title must be at least 3 characters long!';
-            isValid = false;
-        } else {
+        if (songTitle.value.match(Regex.SONG_TITLE_REGEX) && songTitle.value.length > 2 && songTitle.value.length <= 75) {
             songTitle.isValid = true;
-        }
-
-        if (songArtist.value.length < 3) {
-            songArtist.isValid = false;
-            songArtist.message = 'The Artist name must be at least 3 characters long!';
-            isValid = false;
         } else {
-            songArtist.isValid = true;
+            songTitle.isValid = false;
+            songTitle.message = 'The Song title must be at least 3 characters long and 75 characters short!';
+            isValid = false;
         }
 
-        if (!songLength.value.match('^([0-1][0-9]|[2][0-3]):([0-5][0-9])$')) {
+        if (songArtist.value.match(Regex.SONG_ARTIST_REGEX) && songArtist.value.length > 2 && songArtist.value.length <= 50) {
+            songArtist.isValid = true;
+        } else {
+            songArtist.isValid = false;
+            songArtist.message = 'The Artist name must be at least 3 characters long and 50 characters short!';
+            isValid = false;
+        }
+
+        if (songLength.value.match(Regex.SONG_LENGTH_REGEX)) {
+            songLength.isValid = true;
+        } else {
             songLength.isValid = false;
             songLength.message = 'The Length of the Song must match the \'mm:ss\' pattern!';
             isValid = false;
-        } else {
-            songLength.isValid = true;
         }
 
         if (!isValid) {

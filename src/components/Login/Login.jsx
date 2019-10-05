@@ -4,7 +4,6 @@ import { encode } from 'base-64';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import cookies from 'react-cookies';
-import logger from 'loglevel';
 
 class Login extends React.Component {
 
@@ -19,12 +18,6 @@ class Login extends React.Component {
     }
 
     componentDidMount = () => {
-        // how to log to a file?
-        alert("logged?");
-        logger.setLevel("DEBUG");
-        logger.debug("debug");
-        logger.info("info");
-        logger.warn("warn");
         cookies.remove(
             'jwt',
             {
@@ -40,13 +33,25 @@ class Login extends React.Component {
         });
     }
 
+    escapeHtml = text => {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function (m) { return map[m]; });
+    }
+
     handleSubmit = e => {
         e.preventDefault();
         let url = 'http://localhost:8080/authenticate';
 
         let config = {
             headers: {
-                'Authorization': 'Basic ' + encode(this.state.username + ':' + this.state.password),
+                'Authorization': 'Basic ' + encode(this.escapeHtml(this.state.username) + ':' + this.escapeHtml(this.state.password)),
             }
         }
 
