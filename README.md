@@ -2,9 +2,11 @@
 
 ## Users:
 
-Stevenartz / kJcUKrGIbzNl
-RicRam / CORIyNfDzuHW
-JenGal / AsTkdsAkwnDA
+| Username  | Password |
+| --------- | -------- |
+| Stevenartz | kJcUKrGIbzNl |
+| RicRam | CORIyNfDzuHW |
+| JenGal | AsTkdsAkwnDA |
 
 ## Available Scripts
 
