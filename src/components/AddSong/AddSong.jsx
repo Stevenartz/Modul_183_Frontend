@@ -1,30 +1,37 @@
 import React, { Component } from 'react';
 import cn from 'classnames';
 import { Form, Button } from 'react-bootstrap';
-import SnackBar from '@material-ui/core/Snackbar';
 import axios from 'axios';
 import cookies from 'react-cookies';
 import * as Regex from '../../constants/Regex';
 
-
+/**
+ * Shows the form to add a song.
+ * 
+ * Created on 2019-09-12
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class AddSong extends Component {
 
+    // Default constructor.
     constructor(props) {
         super(props);
     }
 
     formDefaults = {
-        songGenre: { value: 'pop', isValid: true, message: '' },
-        songTitle: { value: 'So Long', isValid: true, message: '' },
-        songArtist: { value: 'ESCPR', isValid: true, message: '' },
-        songLength: { value: '02:55', isValid: true, message: '' },
-        snackBarOpen: false,
+        songGenre: { value: '', isValid: true, message: '' },
+        songTitle: { value: '', isValid: true, message: '' },
+        songArtist: { value: '', isValid: true, message: '' },
+        songLength: { value: '', isValid: true, message: '' },
     }
 
     state = {
         ...this.formDefaults
     };
 
+    // Will be called, while the user types.
     onChange = (e) => {
         const state = {
             ...this.state,
@@ -36,6 +43,7 @@ class AddSong extends Component {
         this.setState(state);
     }
 
+    // Will be caleld, when the user submits the form.
     handleSubmit = (e) => {
         e.preventDefault();
         if (this.formIsValid()) {
@@ -66,7 +74,7 @@ class AddSong extends Component {
                 })
                 .then(data => {
                     if (data) {
-                        this.setState({ snackBarOpen: true })
+                        this.props.history.push('/songList');
                         this.setState({ ...this.formDefaults })
                     } else {
                         alert("Something went wrong while saving!");
@@ -76,7 +84,7 @@ class AddSong extends Component {
         }
     }
 
-    // Escapes HTML Tags
+    // Escapes HTML tags.
     escapeHtml = text => {
         let map = {
             '&': '&amp;',
@@ -94,13 +102,13 @@ class AddSong extends Component {
         let { songGenre, songTitle, songArtist, songLength } = this.state;
         let isValid = true;
 
-        // Escape HTML
+        // Escape HTML.
         songGenre.value = this.escapeHtml(songGenre.value.trim());
         songTitle.value = this.escapeHtml(songTitle.value.trim());
         songArtist.value = this.escapeHtml(songArtist.value.trim());
         songLength.value = this.escapeHtml(songLength.value.trim());
 
-
+        // Validate song genre.
         if (songGenre.value.match(Regex.SONG_GENRE_REGEX) && songGenre.value.length > 0 && songGenre.value.length <= 30) {
             songGenre.isValid = true;
         } else {
@@ -109,6 +117,7 @@ class AddSong extends Component {
             isValid = false;
         }
 
+        // Validate song title.
         if (songTitle.value.match(Regex.SONG_TITLE_REGEX) && songTitle.value.length > 2 && songTitle.value.length <= 75) {
             songTitle.isValid = true;
         } else {
@@ -117,6 +126,7 @@ class AddSong extends Component {
             isValid = false;
         }
 
+        // Validate song Artist.
         if (songArtist.value.match(Regex.SONG_ARTIST_REGEX) && songArtist.value.length > 2 && songArtist.value.length <= 50) {
             songArtist.isValid = true;
         } else {
@@ -125,6 +135,7 @@ class AddSong extends Component {
             isValid = false;
         }
 
+        // Validate song length.
         if (songLength.value.match(Regex.SONG_LENGTH_REGEX)) {
             songLength.isValid = true;
         } else {
@@ -133,6 +144,7 @@ class AddSong extends Component {
             isValid = false;
         }
 
+        // Setting the values if errors appeared.
         if (!isValid) {
             this.setState({
                 songGenre,
@@ -145,6 +157,7 @@ class AddSong extends Component {
         return isValid;
     }
 
+    // Renders error messages, if there are some, otherwise the user will be redirected to the SongList page.
     render() {
         const { songGenre, songTitle, songArtist, songLength } = this.state;
 
@@ -168,6 +181,7 @@ class AddSong extends Component {
             <div className='center-screen'>
                 <div className='background'>
                     <h1>Add Song</h1>
+                    <h5>Note: Don't use special characters!</h5>
                     <Form noValidate onSubmit={e => this.handleSubmit(e)}>
                         <Form.Group>
                             <Form.Label>Select Song Genre*</Form.Label>
@@ -191,6 +205,7 @@ class AddSong extends Component {
                                 {songGenre.message}
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group>
                             <Form.Label>Song title*</Form.Label>
                             <Form.Control
@@ -206,6 +221,7 @@ class AddSong extends Component {
                                 {songTitle.message}
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group>
                             <Form.Label>Artist*</Form.Label>
                             <Form.Control
@@ -221,6 +237,7 @@ class AddSong extends Component {
                                 {songArtist.message}
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Form.Group>
                             <Form.Label>Song length (mm:ss)*</Form.Label>
                             <Form.Control
@@ -235,22 +252,15 @@ class AddSong extends Component {
                                 {songLength.message}
                             </Form.Control.Feedback>
                         </Form.Group>
+
                         <Button
                             variant='primary'
                             type='submit'
                             size='lg'
                             block>
                             Submit!
-                    </Button>
-                        <SnackBar
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                            open={this.state.snackBarOpen}
-                            onClose={() => this.setState({ snackBarOpen: false })}
-                            autoHideDuration={2000}
-                            variant='success'
-                            message='Success!' />
+                        </Button>
                     </Form>
-
                 </div>
             </div >
         );

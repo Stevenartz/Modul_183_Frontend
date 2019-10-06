@@ -2,7 +2,17 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import cookies from 'react-cookies';
 
+/**
+ * Checks if the user is authenticated.
+ * 
+ * Created on 2019-09-08
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class Authenticated extends React.Component {
+
+    // Default constructor.
     constructor(props) {
         super(props);
 
@@ -12,6 +22,7 @@ class Authenticated extends React.Component {
         }
     }
 
+    // Will be called on Component call.
     componentDidMount() {
         if (!cookies.load('jwt')) {
             this.setState({ ...this.state, redirect: true });
@@ -50,6 +61,7 @@ class Authenticated extends React.Component {
             })
     }
 
+    // Renders the children if the user is authenticated, otherwise the user is redirected to the login page.
     render() {
         if (!this.state.redirect) {
             if (this.state.user === undefined) {

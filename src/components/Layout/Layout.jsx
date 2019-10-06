@@ -9,8 +9,17 @@ import Dashboard from '../Dashboard/Dashboard';
 import AddSong from '../AddSong/AddSong';
 import SongList from '../SongList/SongList';
 
+/**
+ * Handles the layout for the react-router.
+ * 
+ * Created on 2019-09-08
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class Layout extends React.Component {
 
+    // Decides what the user see's on page.
     render() {
         return (
             <div>

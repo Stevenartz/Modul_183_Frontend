@@ -4,8 +4,17 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import cookies from 'react-cookies';
 
+/**
+ * Shows the dashboard.
+ * 
+ * Created on 2019-09-08
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class Dashboard extends React.Component {
 
+    // Default constructor.
     constructor(props) {
         super(props);
 
@@ -14,6 +23,7 @@ class Dashboard extends React.Component {
         }
     }
 
+    // Will be called on Component call.
     componentDidMount = () => {
         let url = 'http://localhost:8080/getPersonByUsername';
 
@@ -42,10 +52,12 @@ class Dashboard extends React.Component {
             })
     }
 
+    // Refers to a new page.
     changeToAddSong = () => {
         this.props.history.push('/addSong');
     }
 
+    // Displays the Dashboard after successful login.
     render() {
         return (
             <div className='center-screen'>

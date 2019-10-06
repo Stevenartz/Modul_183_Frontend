@@ -2,8 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './SongList.css';
 import cookies from 'react-cookies';
+import 'datejs';
+
+/**
+ * Handles the SongList page.
+ * 
+ * Created on 2019-09-15
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class SongList extends Component {
 
+    // Default constructor.
     constructor(props) {
         super(props);
 
@@ -12,6 +23,7 @@ class SongList extends Component {
         }
     }
 
+    // Will be called on Component call.
     componentDidMount = () => {
         let url = 'http://localhost:8080/getSongsByUsername';
 
@@ -39,6 +51,7 @@ class SongList extends Component {
             })
     }
 
+    // Show Table on page.
     render() {
         return (
             <div className='center-screen'>
@@ -59,7 +72,7 @@ class SongList extends Component {
                                         <td>{item.genre}</td>
                                         <td>{item.title}</td>
                                         <td>{item.artist}</td>
-                                        <td>{item.length}</td>
+                                        <td>{(new Date).clearTime().addSeconds(item.length).toString('mm:ss')}</td>
                                     </tr>
                                 )
                             })}

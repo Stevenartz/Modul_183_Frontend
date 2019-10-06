@@ -2,8 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './Navigation.css';
 
+/**
+ * Show the Navigation on top of the page.
+ * 
+ * Created on 2019-09-08
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class Navigation extends React.Component {
 
+    // Shows the navigation on top of the page.    
     render() {
         return (
             <nav>

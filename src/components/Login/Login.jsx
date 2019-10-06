@@ -5,18 +5,28 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
 import cookies from 'react-cookies';
 
+/**
+ * Handles the Login page.
+ * 
+ * Created on 2019-09-08
+ * 
+ * Author: Stefan Ulrich
+ * Version 1.0
+ */
 class Login extends React.Component {
 
+    // Default constructor.
     constructor(props) {
         super(props);
 
         this.state = {
-            username: 'Stevenartz',
-            password: 'password',
+            username: '',
+            password: '',
             showErrMsg: false,
         }
     }
 
+    // Will be called on Component call.
     componentDidMount = () => {
         cookies.remove(
             'jwt',
@@ -27,12 +37,14 @@ class Login extends React.Component {
         );
     }
 
+    // Will be called, while the user types.
     handleChange = e => {
         this.setState({
             [e.target.id]: e.target.value
         });
     }
 
+    // Escapes HTML tags.
     escapeHtml = text => {
         var map = {
             '&': '&amp;',
@@ -45,6 +57,7 @@ class Login extends React.Component {
         return text.replace(/[&<>"']/g, function (m) { return map[m]; });
     }
 
+    // Will be called, when the user submits the login form.
     handleSubmit = e => {
         e.preventDefault();
         let url = 'http://localhost:8080/authenticate';
@@ -78,14 +91,17 @@ class Login extends React.Component {
             })
     }
 
+    // Makes the error message visible, if the input wasn't correct.
     showErrorMsg = () => {
         this.setState({ showErrMsg: true });
     }
 
+    // Will validate the form.
     validateForm = () => {
         return this.state.username.length > 0 && this.state.password.length > 0;
     }
 
+    // Show Login on page.
     render() {
         return (
             <div className='login-form'>
