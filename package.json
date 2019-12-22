@@ -10,6 +10,7 @@
     "datejs": "^1.0.0-rc3",
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0-beta.12",
+    "react-confirm-alert": "^2.4.1",
     "react-cookies": "^0.1.1",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",

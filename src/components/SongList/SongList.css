@@ -18,4 +18,8 @@ table thead {
   background-color: #fff;
 }
 
+.crossIcon {
+  cursor: pointer;
+}
+
 
