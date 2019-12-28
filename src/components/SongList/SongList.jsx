@@ -3,7 +3,7 @@ import axios from 'axios';
 import './SongList.css';
 import cookies from 'react-cookies';
 import 'datejs';
-import crossIcon from '../../assets/error_icon_24px.png';
+import crossIcon from '../../assets/errorIcons/error_icon_24px.png';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
@@ -55,7 +55,7 @@ class SongList extends Component {
     }
 
     // Method to delete a song by id.
-    deleteSongById = id => {
+    deleteSongById = song => {
         let url = 'http://localhost:8080/deleteSongById';
 
         let config = {
@@ -63,13 +63,13 @@ class SongList extends Component {
                 'Authorization': 'Bearer ' + cookies.load('jwt'),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'songId': id,
+                'songId': song.id,
             }
         }
 
         confirmAlert({
-            title: 'Confirm to submit',
-            message: 'Are you sure to do this.',
+            title: 'Are you sure?',
+            message: "Do you really want to delete the song: '" + song.title + "'?",
             buttons: [
                 {
                     label: 'Yes',
@@ -126,7 +126,7 @@ class SongList extends Component {
                                         {/* Icon made by Smashicons perfect from www.flaticon.com */}
                                         <td>
                                             <img
-                                                onClick={() => this.deleteSongById(item.id)}
+                                                onClick={() => this.deleteSongById(item)}
                                                 className={'crossIcon'}
                                                 src={crossIcon} />
                                         </td>

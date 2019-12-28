@@ -1,0 +1,10 @@
+span {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+a:link {
+    color: black;
+}

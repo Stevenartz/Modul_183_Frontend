@@ -9,6 +9,8 @@ import Dashboard from '../Dashboard/Dashboard';
 import AddSong from '../AddSong/AddSong';
 import SongList from '../SongList/SongList';
 
+import './Layout.css';
+
 /**
  * Handles the layout for the react-router.
  * 
@@ -30,6 +32,7 @@ class Layout extends React.Component {
                         <Route path='/dashboard' component={Dashboard} />
                         <Route path='/addSong' component={AddSong} />
                         <Route path='/songList' component={SongList} />
+                        <span>&copy; Playlist Maker <a href="mailto:s.ulrich31@gmx.ch">Contact Developer</a></span>
                     </Authenticated>
                 </Switch>
             </div>
